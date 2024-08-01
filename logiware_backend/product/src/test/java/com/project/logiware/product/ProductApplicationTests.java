@@ -71,6 +71,5 @@ class ProductApplicationTests {
 				.price(BigDecimal.valueOf(1.99))
 				.build();
 	}
-
 }
 
