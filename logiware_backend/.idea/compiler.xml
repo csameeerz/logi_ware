@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
+        <module name="notification" />
         <module name="product" />
         <module name="discovery-server" />
         <module name="inventory" />
@@ -20,6 +21,7 @@
       <module name="api-gateway" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
       <module name="inventory" options="-parameters" />
+      <module name="notification" options="-parameters" />
       <module name="order" options="-parameters" />
       <module name="product" options="-parameters" />
     </option>

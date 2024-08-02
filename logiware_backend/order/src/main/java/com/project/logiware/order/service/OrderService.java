@@ -4,10 +4,12 @@ import com.project.logiware.order.dto.InventoryResponse;
 import com.project.logiware.order.dto.OrderLineItemsDto;
 import com.project.logiware.order.dto.OrderRequest;
 import com.project.logiware.order.dto.OrderResponse;
+import com.project.logiware.order.event.OrderPlacedEvent;
 import com.project.logiware.order.model.Order;
 import com.project.logiware.order.model.OrderLineItems;
 import com.project.logiware.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -23,6 +25,8 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     private final WebClient.Builder webClientBuilder;
+
+    private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
 
     public String placeOrder(OrderRequest orderRequest) {
         Order order = new Order();
@@ -54,6 +58,7 @@ public class OrderService {
 
         if (allProductsInStock) {
             orderRepository.save(order);
+            kafkaTemplate.send("notificationTopic", new OrderPlacedEvent(order.getOrderNumber()));
             return "Order placed successfully";
         } else {
             throw new IllegalArgumentException("Products are not in stock, please try later.");
