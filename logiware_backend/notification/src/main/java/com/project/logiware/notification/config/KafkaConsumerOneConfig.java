@@ -18,7 +18,7 @@ import java.util.Map;
 public class KafkaConsumerOneConfig {
 
     @Bean
-    public ConsumerFactory<String, OrderPlacedEvent> consumerFactory(){
+    public ConsumerFactory<String, OrderPlacedEvent> consumerFactory() {
         JsonDeserializer<OrderPlacedEvent> deserializer = new JsonDeserializer<>(OrderPlacedEvent.class);
         deserializer.setRemoveTypeHeaders(false);
         deserializer.addTrustedPackages("*");
@@ -26,8 +26,8 @@ public class KafkaConsumerOneConfig {
 
         Map<String, Object> config = new HashMap<>();
 
-        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        config.put(ConsumerConfig.GROUP_ID_CONFIG, "group_one");
+        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "broker:9092");
+        config.put(ConsumerConfig.GROUP_ID_CONFIG, "notificationTopic");
         config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         config.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
@@ -37,7 +37,7 @@ public class KafkaConsumerOneConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, OrderPlacedEvent> kafkaListenerContainerFactory(){
+    public ConcurrentKafkaListenerContainerFactory<String, OrderPlacedEvent> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, OrderPlacedEvent> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;

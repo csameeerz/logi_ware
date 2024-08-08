@@ -5,7 +5,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.1</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <groupId>com.project</groupId>
@@ -25,9 +25,9 @@
     </modules>
 
     <properties>
-        <java.version>22</java.version>
-        <maven.compiler.source>22</maven.compiler.source>
-        <maven.compiler.target>22</maven.compiler.target>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <spring-cloud.version>2023.0.0</spring-cloud.version>
     </properties>
 
@@ -50,18 +50,6 @@
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-tracing-bridge-brave</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.zipkin.reporter2</groupId>
-            <artifactId>zipkin-reporter-brave</artifactId>
         </dependency>
     </dependencies>
 
@@ -97,6 +85,31 @@
                         </exclude>
                     </excludes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.4.3</version>
+                <configuration>
+                    <from>
+                        <image>eclipse-temurin:17.0.4.1_1-jre</image>
+                    </from>
+                    <to>
+                        <image>csameeerz/${project.artifactId}</image>
+                        <auth>
+                            <username>csameeerz</username>
+                            <password>microservices</password>
+                        </auth>
+                    </to>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>dockerBuild</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

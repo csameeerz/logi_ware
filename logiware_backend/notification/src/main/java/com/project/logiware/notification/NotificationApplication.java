@@ -14,13 +14,20 @@ import com.project.logiware.notification.event.OrderPlacedEvent;
 @RequiredArgsConstructor
 @Slf4j
 public class NotificationApplication {
+    private final ObservationRegistry observationRegistry;
+
+    private final Tracer tracer;
 
     public static void main(String[] args) {
         SpringApplication.run(NotificationApplication.class, args);
     }
 
-    @KafkaListener(topics = "notificationTopic", groupId = "group_one", containerFactory = "kafkaListenerContainerFactory")
+    @KafkaListener(topics = "notificationTopic")
     public void handleNotification(OrderPlacedEvent orderPlacedEvent) {
-        log.info("Received Notification for Order - {}", orderPlacedEvent.getOrderNumber());
+        Observation.createNotStarted("on-message", this.observationRegistry).observe(() -> {
+            log.info("Got message <{}>", orderPlacedEvent);
+            log.info("TraceId- {}, Received Notification for Order - {}", this.tracer.currentSpan().context().traceId(),
+                    orderPlacedEvent.getOrderNumber());
+        });
     }
 }
